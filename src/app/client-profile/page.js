@@ -18,6 +18,7 @@ export default function ClientProfile() {
 
   return (
     <div className="p-6 max-w-lg mx-auto">
+
       <h1 className="text-xl font-bold mb-4">Client Profile</h1>
      
       {profile && (

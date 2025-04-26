@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import Header from '@/components/Header';
 
 export default function Programs() {
   const [programs, setPrograms] = useState([]);
@@ -23,10 +24,10 @@ export default function Programs() {
   };
 
   return (
-    <div className="p-6 max-w-lg mx-auto">
-      <h1 className="text-xl font-bold mb-4">Health Programs</h1>
+    <div className="p-6 max-w-xl mx-auto">
+      <Header/>
       <input
-        className="border p-2 w-full mb-2"
+        className="border p-2 w-full mt-4 mb-2"
         placeholder="Program Name"
         value={name}
         onChange={e => setName(e.target.value)}

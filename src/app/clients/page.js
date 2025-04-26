@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { toast, Toaster } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
-
+import Header from '@/components/Header';
 
 export default function Clients() {
     const router = useRouter();
@@ -78,8 +78,9 @@ export default function Clients() {
 
   return (
     <div className="p-6 max-w-lg mx-auto">
+      <Header/>
       <Toaster position="top-right"/>
-      <h1 className="text-xl font-bold mb-4">Register Client</h1>
+      <h1 className="text-xl font-bold mt-4 mb-4">Register Client</h1>
 
       <input
         className="border p-2 w-full mb-2"
