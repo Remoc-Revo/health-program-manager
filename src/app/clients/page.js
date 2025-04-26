@@ -1,77 +1,80 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { toast, Toaster } from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
+
 
 export default function Clients() {
-  const [clients, setClients] = useState([]);
-  const [programs, setPrograms] = useState([]);
-  const [form, setForm] = useState({ full_name: '', email: '', phone: '' });
-  const [openMenuId, setOpenMenuId] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [enrollingClientId, setEnrollingClientId] = useState(null);
-  const [search, setSearch] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
+    const router = useRouter();
+    const [clients, setClients] = useState([]);
+    const [programs, setPrograms] = useState([]);
+    const [form, setForm] = useState({ full_name: '', email: '', phone: '' });
+    const [openMenuId, setOpenMenuId] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [enrollingClientId, setEnrollingClientId] = useState(null);
+    const [search, setSearch] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
 
-  useEffect(() => {
-    fetchClients();
-    fetchPrograms();
-  }, []);
+    useEffect(() => {
+        fetchClients();
+        fetchPrograms();
+    }, []);
 
-  const fetchClients = async () => {
-    const res = await fetch('/api/clients');
-    const data = await res.json();
-    setClients(data);
-  };
+    const fetchClients = async () => {
+        const res = await fetch('/api/clients');
+        const data = await res.json();
+        setClients(data);
+    };
 
-  const fetchPrograms = async () => {
-    const res = await fetch('/api/programs');
-    const data = await res.json();
-    setPrograms(data);
-  };
+    const fetchPrograms = async () => {
+        const res = await fetch('/api/programs');
+        const data = await res.json();
+        setPrograms(data);
+    };
 
-  const register = async () => {
-    await fetch('/api/clients', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form),
-    });
-    setForm({ full_name: '', email: '', phone: '' });
-    await fetchClients();
-  };
+    const register = async () => {
+        await fetch('/api/clients', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+        });
+        setForm({ full_name: '', email: '', phone: '' });
+        await fetchClients();
+    };
 
-  const enrollClient = async (clientId, programId) => {
-    setLoading(true);
-    setEnrollingClientId(clientId);
-    await fetch('/api/enrollments', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ clientId, programId }),
-    });
-    setLoading(false);
-    setOpenMenuId(null);
-    setEnrollingClientId(null);
-    toast.success('Client enrolled successfully!');
-  };
+    const enrollClient = async (clientId, programId) => {
+        setLoading(true);
+        setEnrollingClientId(clientId);
+        await fetch('/api/enrollments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ clientId, programId }),
+        });
+        setLoading(false);
+        setOpenMenuId(null);
+        setEnrollingClientId(null);
+        toast.success('Client enrolled successfully!');
+    };
 
-  const viewProfile = (clientId) => {
-    alert(`Viewing profile for Client ID: ${clientId}`);
-  };
+    const viewProfile = (clientId) => {
+        router.push(`/client-profile?id=${clientId}`);
+    };
 
-  const handleSearch = (e) => {
-    const value = e.target.value;
-    setSearch(value);
+    const handleSearch = (e) => {
+        const value = e.target.value;
+        setSearch(value);
 
-    if (value.trim() === '') {
-      setSearchResults([]);
-      return;
-    }
+        if (value.trim() === '') {
+        setSearchResults([]);
+        return;
+        }
 
-    const results = clients.filter(c =>
-      c.full_name.toLowerCase().includes(value.toLowerCase()) ||
-      c.email.toLowerCase().includes(value.toLowerCase())
-    );
-    setSearchResults(results);
-  };
+        const results = clients.filter(c =>
+        c.full_name.toLowerCase().includes(value.toLowerCase()) ||
+        c.email.toLowerCase().includes(value.toLowerCase())
+        );
+        setSearchResults(results);
+    };
 
   return (
     <div className="p-6 max-w-lg mx-auto">
