@@ -10,6 +10,5 @@ export async function POST(req) {
 //fetch existing programs
 export async function GET() {
   const [programs] = await db.query('SELECT * FROM program');
-  console.log("Programs query result: ",programs)
   return new Response(JSON.stringify(programs), { status: 200 });
 }

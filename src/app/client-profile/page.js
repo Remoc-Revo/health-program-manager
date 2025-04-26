@@ -9,7 +9,7 @@ export default function ClientProfile() {
   const [profile, setProfile] = useState(null);
 
   useEffect(() => {
-     fetch(`/api/profile?clientId=${clientId}`)
+     fetch(`/api/client-profile?id=${clientId}`)
         .then(res =>res.json())
         .then(data => setProfile(data));       
   }, [clientId]);
