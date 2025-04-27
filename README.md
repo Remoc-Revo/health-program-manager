@@ -1,36 +1,162 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Health Program Manager
+A simple web application for managing clients, programs, and their enrollments.
+Built with Next.js, Tailwind CSS and MySQL.
 
-## Getting Started
+## Features
+- Create and manage health programs
 
-First, run the development server:
+- Register clients
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Register Programs
+
+- Enroll clients into programs
+
+- Search for clients
+
+- Access client profiles via API
+
+
+## Technologies Used
+- Next.js (Front-end and API routes)
+- Tailwind CSS
+- MySQL
+
+
+## Project Structure
+```
+src/
+├── app/                      # Front-end pages and API routes
+│   ├── api/                  # Backend API endpoints
+│   │   ├── client-profile/
+│   │   │   └── route.js       # API route to get or update a client's profile
+│   │   ├── clients/
+│   │   │   └── route.js       # API route for client CRUD operations
+│   │   ├── enrollments/
+│   │   │   └── route.js       # API route for enrolling clients into programs
+│   │   ├── programs/
+│   │   │   └── route.js       # API route for program CRUD operations
+│   ├── client-profile/
+│   │   └── page.js            # Front-end page displaying a client profile
+│   ├── clients/
+│   │   └── page.js            # Front-end page listing all clients
+│   ├── programs/
+│   │   └── page.js            # Front-end page listing all programs
+│   ├── layout.js              # Main layout file (common structure for all pages)
+│   └── page.js                # Home page (redirects to programs page)
+├── components/                # Reusable UI components
+│   └── Header.js              # Navigation header component
+└── lib/                       # Utility functions and external libraries
+    └── db.js                  # Database connection setup for MySQL
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Database Schema
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```sql
+CREATE TABLE client (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  full_name VARCHAR(255) NOT NULL,
+  phone VARCHAR(20),
+  email VARCHAR(255),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+CREATE TABLE program (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL
+);
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+CREATE TABLE enrollment (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  client_id INT,
+  program_id INT,
+  enrolled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (client_id) REFERENCES client(id),
+  FOREIGN KEY (program_id) REFERENCES program(id)
+);
+```
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Setup Instructions
+1. Clone the repository.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Create a .env file at the project root:
+```
+DB_HOST=your_database_host
+DB_USER=your_database_user
+DB_PASSWORD=your_database_password
+DB=health-program-manager
+```
+
+4. Run the development server:
+```
+ npm run dev 
+```
+
+5. Open http://localhost:3000 in your browser.
+
+
+
+## API Documentation
+
+### Client Profile API for external services
+
+#### Fetch a client profile by Email or Phone
+
+**Endpoint:**  
+```http
+GET /api/client-profile
+```
+
+**Query Parameters:**
+
+| Parameter | Type   | Required | Description                         |
+|-----------|--------|----------|-------------------------------------|
+| `email`   | string | No       | Email address of the client         |
+| `phone`   | string | No       | Phone number of the client          |
+
+- You must provide either `email` **or** `phone`.
+- If both are provided, `email` will be prioritized.
+
+---
+
+### Example Requests
+
+**Search by Email**
+```http
+GET /api/client-profile?email=tim@example.com
+```
+
+**Search by Phone**
+```http
+GET /api/client-profile?phone=0769658733
+```
+
+**Example Successful Response (200 OK)**
+```json
+{
+  "id": 1,
+  "full_name": "Tim Ng'uono",
+  "phone": "0769658733",
+  "email": "tim@example.com",
+  "created_at": "2024-04-26T10:00:00.000Z",
+  "enrolledPrograms": [
+    {
+      "id": 1,
+      "name": "Malaria Program",
+    },
+    {
+      "id": 2,
+      "name": "Diabetes Management",
+    }
+  ]
+}
+```
