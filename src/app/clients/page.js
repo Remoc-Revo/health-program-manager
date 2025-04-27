@@ -121,18 +121,16 @@ export default function Clients() {
           <div className="absolute w-full bg-white border shadow rounded mt-1 max-h-60 overflow-y-auto z-10">
             {searchResults.length > 0 ? (
               searchResults.map(c => (
-                <div key={c.id} className="p-2 hover:bg-gray-100 cursor-pointer flex justify-between items-center">
-                  <span>{c.full_name} - {c.email}</span>
-                  <button
-                    onClick={() => {
-                      setOpenMenuId(c.id);
-                      setSearch('');
-                    }}
-                    className="px-2 py-1 rounded hover:bg-gray-200"
-                  >
-                    ⋮
+                <button
+                    onClick={() => {                    
+                      setSearch(''); 
+                      viewProfile(c.id);
+                    }} 
+                    key={c.id} 
+                    className="p-2 cursor-pointer flex justify-between items-center">
+                  <span>{c.full_name} - {c.email}</span>                   
                   </button>
-                </div>
+                
               ))
             ) : (
               <p className="p-2 text-gray-500">No matching clients</p>
