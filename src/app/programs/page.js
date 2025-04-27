@@ -27,13 +27,13 @@ export default function Programs() {
     <div className="p-6 max-w-xl mx-auto">
       <Header/>
       <input
-        className="border p-2 w-full mt-4 mb-2"
+        className="border p-2 w-full mt-8 mb-3"
         placeholder="Program Name"
         value={name}
         onChange={e => setName(e.target.value)}
       />
       <button className="bg-blue-500 text-white px-4 py-2 rounded" onClick={createProgram}>Add Program</button>
-      <ul className="mt-4">
+      <ul className="mt-8">
         {programs.map(p => (
           <li key={p.id} className="border p-2 my-1">{p.name}</li>
         ))}

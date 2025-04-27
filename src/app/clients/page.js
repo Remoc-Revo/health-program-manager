@@ -80,7 +80,7 @@ export default function Clients() {
     <div className="p-6 max-w-lg mx-auto">
       <Header/>
       <Toaster position="top-right"/>
-      <h1 className="text-xl font-bold mt-4 mb-4">Register Client</h1>
+      <h2 className="text-lg font-medium mt-8 mb-4">Register Client</h2>
 
       <input
         className="border p-2 w-full mb-2"
@@ -108,7 +108,7 @@ export default function Clients() {
       </button>
 
       {/* Search input */}
-      <div className="relative mb-6">
+      <div className="relative mb-6 mt-9">
         <input
           className="border p-2 w-full"
           placeholder="Search Clients..."
