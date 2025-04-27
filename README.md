@@ -160,3 +160,9 @@ GET /api/client-profile?phone=0769658733
   ]
 }
 ```
+
+## Additional Materials
+
+**Presentation**: [Health Program Manager - Approach, Design and Solution(PowerPoint)](assets/Health_Program_Manager_Approach_and_Design.pptx)
+
+**Prototype Demonstration**: [View Prototype Demo Video](assets/Prototype_Demo.mkv)
